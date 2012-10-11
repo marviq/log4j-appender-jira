@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%t] %c - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="JIRA" class="com.marviq.util.logging.JIRALog4jAppender">
+
+        <!-- The URL on which JIRA is accessible (the XML-RPC interface must be enabled) -->
+        <param name="url" value="https://jira.example.org/"/>
+
+        <!-- The JIRA username of the account that will be creating issues. -->
+        <param name="username" value="USERNAME-OF-REPORTER"/>
+
+        <!-- The password that authenticates 'username' -->
+        <param name="password" value="PASSWORD-FOR-REPORTER"/>
+
+        <!-- The JIRA project key in which issues will be created -->
+        <param name="projectkey" value="PROJECTKEY"/>
+
+        <!-- The JIRA username of the assignee of issues created by this appender -->
+        <param name="assignee" value="USERNAME-OF-ASSIGNEE"/>
+
+        <!-- Optional: a text label used to distinguish issues created by this appender from others with otherwise
+             similar configuration (e.g: "ACC server"). -->
+        <param name="label" value="unit-testing"/>
+
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%t] %c - %m%n"/>
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="ERROR"/>
+        </filter>
+
+    </appender>
+
+    <!-- It is advisable to wrap the Log4j-appender for JIRA in an asynchronous appender, that is configured to be
+         non-blocking (which means that it will drop events after its buffer is full). This will reduce the likelihood
+         that a continuous stream of to-be-logged events floods both your network IO as well as the JIRA instance you're
+         logging to. It does, however, not rule out any chance of this happening! -->
+    <appender name="ASYNC-JIRA" class="org.apache.log4j.AsyncAppender">
+        <!-- blocking=false causes events that can't be buffered to be discarded (otherwise, calls to add those event to
+             the buffer would be blocking!) -->
+        <param name="blocking" value="false"/>
+        <appender-ref ref="JIRA"/>
+    </appender>
+
+    <root>
+        <priority value="ALL"/>
+        <!-- Be careful not to use the original 'jira' appender, but the asynchronous wrapper instead. -->
+        <appender-ref ref="ASYNC-JIRA"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</log4j:configuration>
