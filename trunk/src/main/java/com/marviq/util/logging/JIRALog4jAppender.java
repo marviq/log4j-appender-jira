@@ -56,6 +56,9 @@ public class JIRALog4jAppender extends AppenderSkeleton {
 
     /** class#getSimpleName() for this appender. */
     private static final String SIMPLE_NAME = JIRALog4jAppender.class.getSimpleName();
+    
+    /** Maximum Jira summary length as experienced in practice. */
+    public static final Integer MAXIMUM_SUMMARY_LENGTH = 254;
 
     /**
      * The cache that holds earlier reported issues. This is used when evaluating if a new JIRA issue needs to be
@@ -139,16 +142,19 @@ public class JIRALog4jAppender extends AppenderSkeleton {
         this.assignee = assignee;
     }
 
+    @Override
     public boolean requiresLayout() {
         return true;
     }
 
+    @Override
     public void close() {
         synchronized (CACHE) {
             CACHE.invalidateAll();
         }
     }
 
+    @Override
     protected void append(LoggingEvent event) {
         if (!event.getLevel().isGreaterOrEqual(Level.ERROR)) {
             // Ignore events that have been logged at a level lower than ERROR.
@@ -169,12 +175,7 @@ public class JIRALog4jAppender extends AppenderSkeleton {
 
         final int hash = getHash(ti);
 
-        final String title;
-        if (label != null && label.trim().length() > 0) {
-            title = "(Auto-generated, labelled '" + label + "') " + event.getLoggerName() + ':' + event.getMessage();
-        } else {
-            title = "(Auto-generated) " + event.getLoggerName() + ':' + event.getMessage();
-        }
+        final String title = getSummary(event, label);
 
         try {
             LogLog.debug(SIMPLE_NAME + ": Creating ticket in project " + projectkey);
@@ -219,6 +220,8 @@ public class JIRALog4jAppender extends AppenderSkeleton {
             LogLog.error(SIMPLE_NAME + ": Failed to create or update ticket in project " + projectkey, e);
         }
     }
+    
+    
 
     /**
      * Calculates a semi-unique hash for the Throwable that is being logged. Note that this method ignores the
@@ -237,6 +240,32 @@ public class JIRALog4jAppender extends AppenderSkeleton {
             hash = 31 * hash + (strRep[i] != null ? strRep[i].hashCode() : 0);
         }
         return hash;
+    }
+    
+    /**
+     * Generates an appropriate Jira summary text for the event.
+     * 
+     * Respects the Jira maximum summary length of 254 characters. If the total summary
+     * length is headed towards exceeding this value, the summary is trimmed down in
+     * quite a relentless way: only the first 250 characters will be included.
+     * 
+     * @param event the original event which needs to be appended
+     * @param label the label as configured in the log4j config
+     * @return String to be used as summary for new Jira issue
+     * @see <a href="http://java.net/jira/browse/LOG4J_APPENDER_JIRA-1">Problem occurring previously with summary length</a>
+     */
+    protected static String getSummary(final LoggingEvent event, final String label) {
+        final StringBuilder summaryBuilder = new StringBuilder();
+        if (label != null && label.trim().length() > 0) {
+            summaryBuilder.append("(Auto-generated, labelled '").append(label).append("') ");
+        } else {
+            summaryBuilder.append("(Auto-generated) ");
+        }
+        summaryBuilder.append(event.getLoggerName()).append(":").append(event.getMessage());
+        
+        // Issue: http://java.net/jira/browse/LOG4J_APPENDER_JIRA-1
+        // Jira can't handle summaries larger than 254 characters so we have to be relentless: cut it off
+        return (summaryBuilder.length() <= MAXIMUM_SUMMARY_LENGTH ? summaryBuilder.toString() : summaryBuilder.substring(0, MAXIMUM_SUMMARY_LENGTH - 4) + " ...");
     }
 
     protected String getText(LoggingEvent event, boolean skipStack) {

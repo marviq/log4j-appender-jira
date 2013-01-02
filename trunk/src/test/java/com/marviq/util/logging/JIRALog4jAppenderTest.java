@@ -15,8 +15,12 @@
  */
 package com.marviq.util.logging;
 
+import java.util.Arrays;
 import junit.framework.Assert;
+import org.apache.log4j.Category;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
+import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 import org.junit.Test;
 
@@ -40,6 +44,42 @@ public class JIRALog4jAppenderTest {
 
         // verify
         Assert.assertEquals(resultA, resultB);
+    }
+    
+    /**
+     * Tests the trimming feature of summary text creation, in order to stay within
+     * the maximum summary length of Jira.
+     * @see <a href="http://java.net/jira/browse/LOG4J_APPENDER_JIRA-1">Problem occurring previously with summary length</a>
+     */
+    @Test
+    public void testCreateSummaryText() throws Exception {
+        final LoggingEvent le = new LoggingEvent(null, Logger.getLogger("LOGGER_NAME_WITH_A_LENGTH_OF_31"), Priority.ERROR, "MESSAGE_WITH_A_LENGTH_OF_27", null);
+
+        // Length of summary will be sum of:
+        //   27   "(Auto-generated, labelled '"
+        //   ..   label
+        //    3   "') "
+        //   31   "LOGGER_NAME_WITH_A_LENGTH_OF_31"
+        //    1   ":"
+        //   27   "MESSAGE_WITH_A_LENGTH_OF_27"
+        //  --- +
+        //   89   PLUS label length
+        final char[] labelCharsJustWithinLimits = new char[JIRALog4jAppender.MAXIMUM_SUMMARY_LENGTH - 89];
+        final char[] labelCharsJustBeyondLimits = new char[JIRALog4jAppender.MAXIMUM_SUMMARY_LENGTH - 89 + 1];
+        Arrays.fill(labelCharsJustWithinLimits, '*');
+        Arrays.fill(labelCharsJustBeyondLimits, '*');
+        
+        final String summaryForJustWithinLimits = JIRALog4jAppender.getSummary(le, new String(labelCharsJustWithinLimits));
+        final String summaryForJustBeyondLimits = JIRALog4jAppender.getSummary(le, new String(labelCharsJustBeyondLimits));
+                
+        Assert.assertTrue(
+            "Summary for just within limits was not as expected: " + summaryForJustWithinLimits,
+            summaryForJustWithinLimits.endsWith("MESSAGE_WITH_A_LENGTH_OF_27")
+        );
+        Assert.assertTrue(
+            "Summary for just beyond limits was not as expected: " + summaryForJustBeyondLimits,
+            summaryForJustBeyondLimits.endsWith("MESSAGE_WITH_A_LENGTH_ ...")
+        );
     }
 
     /**
