@@ -62,6 +62,16 @@
                 <role>Original Author</role>
             </roles>
         </developer>
+        <developer>
+            <name>Emiel van der Herberg</name>
+            <email>emiel.van.der.herberg@marviq.com</email>
+            <organization>Marviq B.V.</organization>
+            <organizationUrl>http://www.marviq.com</organizationUrl>
+            <timezone>+1</timezone>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <properties>
