@@ -3,6 +3,12 @@ Marviq's JIRA Appender for Log4j README
 The content of this project can be used as a standard Appender for the Log4j logging framework. The appender provided by
 this project will (attempt to) log events as (or in) Atlassian JIRA issues.
 
+Two types of binaries are included in this distribution:
+ * log4j-appender-jira-X.Y.Z.jar is an archive that includes all third party dependencies. The package names of their
+   classes are modified, which prevents classloading issues.
+ * original-log4j-appender-jira-X.Y.Z.jar is an archive that includes only the non-third-party code. Its dependencies
+   are included in the /lib/ directory of this distribution.
+
 Example configuration can be found in the log4j.xml file in the /example/ directory of this distribution. Please note
 that this appender makes use of the XML-RPC interface of the JIRA instance. Make sure that it is enabled.
 
