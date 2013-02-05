@@ -4,7 +4,7 @@
 
     <groupId>com.marviq.util.logging</groupId>
     <artifactId>log4j-appender-jira</artifactId>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
 
     <name>Log4j JIRA-Appender</name>
     <description>A Log4j appender that creates issues in an Atlassian JIRA issue tracker.</description>
@@ -18,9 +18,9 @@
     </organization>
 
     <issueManagement>
-		<system>jira</system>
-		<url>http://java.net/jira/browse/LOG4J_APPENDER_JIRA</url>
-	</issueManagement>
+        <system>jira</system>
+        <url>http://java.net/jira/browse/LOG4J_APPENDER_JIRA</url>
+    </issueManagement>
 
     <mailingLists>
         <mailingList>
@@ -86,23 +86,23 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<MavenGroupId>${project.groupId}</MavenGroupId>
-							<MavenArtifactId>${project.artifactId}</MavenArtifactId>
-							<MavenVersion>${project.version}</MavenVersion>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <MavenGroupId>${project.groupId}</MavenGroupId>
+                            <MavenArtifactId>${project.artifactId}</MavenArtifactId>
+                            <MavenVersion>${project.version}</MavenVersion>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
