@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.marviq.util.logging</groupId>
+    <artifactId>log4j-appender-jira</artifactId>
+    <version>1.3</version>
+
+    <name>Log4j JIRA-Appender</name>
+    <description>A Log4j appender that creates issues in an Atlassian JIRA issue tracker.</description>
+    <inceptionYear>2011</inceptionYear>
+
+    <url>http://java.net/projects/log4j-appender-jira/</url>
+
+    <organization>
+        <name>Marviq B.V.</name>
+        <url>http://www.marviq.com</url>
+    </organization>
+
+    <issueManagement>
+		<system>jira</system>
+		<url>http://java.net/jira/browse/LOG4J_APPENDER_JIRA</url>
+	</issueManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>Commits Mailing List</name>
+            <archive>http://java.net/projects/log4j-appender-jira/lists/commits/archive</archive>
+        </mailingList>
+        <mailingList>
+            <name>Issues Mailing List</name>
+            <archive>http://java.net/projects/log4j-appender-jira/lists/issues/archive</archive>
+        </mailingList>
+    </mailingLists>
+
+    <scm>
+        <url>http://java.net/projects/log4j-appender-jira/sources/source-code-repository/show</url>
+        <connection>scm:svn:https://svn.java.net/svn/log4j-appender-jira~source-code-repository</connection>
+        <developerConnection>scm:svn:https://svn.java.net/svn/log4j-appender-jira~source-code-repository</developerConnection>
+        <tag>trunk</tag>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Guus der Kinderen</name>
+            <email>guus.der.kinderen@marviq.com</email>
+            <organization>Marviq B.V.</organization>
+            <organizationUrl>http://www.marviq.com</organizationUrl>
+            <timezone>+1</timezone>
+            <roles>
+                <role>Developer</role>
+                <role>Original Author</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Emiel van der Herberg</name>
+            <email>emiel.van.der.herberg@marviq.com</email>
+            <organization>Marviq B.V.</organization>
+            <organizationUrl>http://www.marviq.com</organizationUrl>
+            <timezone>+1</timezone>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<MavenGroupId>${project.groupId}</MavenGroupId>
+							<MavenArtifactId>${project.artifactId}</MavenArtifactId>
+							<MavenVersion>${project.version}</MavenVersion>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.4.0</version>
+                <configuration>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>findbugs</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>findbugs</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.</shadedPattern>
+                                    <excludes>
+                                        <exclude>com.marviq.util.logging.*</exclude>
+                                    </excludes>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/dist.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+        <dependency>
+            <groupId>xmlrpc</groupId>
+            <artifactId>xmlrpc-client</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
