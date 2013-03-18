@@ -35,12 +35,10 @@ public class JIRALog4jAppenderTest {
 
         // setup
         final Throwable throwable = new Throwable();
-        final ThrowableInformation tiA = new ThrowableInformation(throwable);
-        final ThrowableInformation tiB = new ThrowableInformation(throwable);
 
         // do magic
-        final int resultA = JIRALog4jAppender.getHash(tiA);
-        final int resultB = JIRALog4jAppender.getHash(tiB);
+        final int resultA = JIRALog4jAppender.getHash(throwable);
+        final int resultB = JIRALog4jAppender.getHash(throwable);
 
         // verify
         Assert.assertEquals(resultA, resultB);
@@ -93,12 +91,10 @@ public class JIRALog4jAppenderTest {
         final String message = "text";
         // Construction of throwable instances need to happen on the same line for the stacktraces to be identical!
         final Throwable t1 = new Throwable(message); final Throwable t2 = new Throwable(message);
-        final ThrowableInformation tiA = new ThrowableInformation(t1);
-        final ThrowableInformation tiB = new ThrowableInformation(t2);
 
         // do magic
-        final int resultA = JIRALog4jAppender.getHash(tiA);
-        final int resultB = JIRALog4jAppender.getHash(tiB);
+        final int resultA = JIRALog4jAppender.getHash(t1);
+        final int resultB = JIRALog4jAppender.getHash(t2);
 
         // verify
         Assert.assertEquals(resultA, resultB);
@@ -114,12 +110,10 @@ public class JIRALog4jAppenderTest {
         // setup
         // Construction of throwable instances need to happen on the same line for the stacktraces to be identical!
         final Throwable t1 = new Throwable("one"); final Throwable t2 = new Throwable("two");
-        final ThrowableInformation tiA = new ThrowableInformation(t1);
-        final ThrowableInformation tiB = new ThrowableInformation(t2);
 
         // do magic
-        final int resultA = JIRALog4jAppender.getHash(tiA);
-        final int resultB = JIRALog4jAppender.getHash(tiB);
+        final int resultA = JIRALog4jAppender.getHash(t1);
+        final int resultB = JIRALog4jAppender.getHash(t2);
 
         // verify
         Assert.assertEquals(resultA, resultB);
@@ -135,12 +129,10 @@ public class JIRALog4jAppenderTest {
         // setup
         final Throwable t1 = new Throwable(); // CANNOT be on the same line as the one below (need different line numbers!)
         final Throwable t2 = new Throwable(); // CANNOT be on the same line as the one above (need different line numbers!)
-        final ThrowableInformation tiA = new ThrowableInformation(t1);
-        final ThrowableInformation tiB = new ThrowableInformation(t2);
 
         // do magic
-        final int resultA = JIRALog4jAppender.getHash(tiA);
-        final int resultB = JIRALog4jAppender.getHash(tiB);
+        final int resultA = JIRALog4jAppender.getHash(t1);
+        final int resultB = JIRALog4jAppender.getHash(t2);
 
         // verify
         Assert.assertTrue(resultA != resultB);
