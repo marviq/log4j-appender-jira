@@ -180,14 +180,15 @@
             <version>12.0</version>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-        </dependency>
-        <dependency>
             <groupId>xmlrpc</groupId>
             <artifactId>xmlrpc-client</artifactId>
             <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>[1.2.15,)</version> <!-- last changes made to the AppenderSkeleton were done in one of the RCs for 1.2.15. (see http://svn.apache.org/viewvc?view=revision&revision=528257 ). Everything after that revision should be ok. -->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
