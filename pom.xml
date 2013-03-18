@@ -146,6 +146,9 @@
                                 <relocation>
                                     <pattern>org.</pattern>
                                     <shadedPattern>repackaged.com.marviq.util.logging.</shadedPattern>
+                                    <excludes>
+                                        <exclude>org.apache.log4j.*</exclude>
+                                    </excludes>
                                 </relocation>
                             </relocations>
                         </configuration>
