@@ -133,21 +133,22 @@
                         <configuration>
                             <relocations>
                                 <relocation>
-                                    <pattern>com.</pattern>
-                                    <shadedPattern>repackaged.com.marviq.util.logging.</shadedPattern>
+                                    <pattern>com</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging</shadedPattern>
                                     <excludes>
                                         <exclude>com.marviq.util.logging.*</exclude>
                                     </excludes>
                                 </relocation>
                                 <relocation>
-                                    <pattern>javax.</pattern>
-                                    <shadedPattern>repackaged.com.marviq.util.logging.</shadedPattern>
+                                    <pattern>javax</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.</pattern>
-                                    <shadedPattern>repackaged.com.marviq.util.logging.</shadedPattern>
+                                    <pattern>org</pattern>
+                                    <shadedPattern>repackaged.org.marviq.util.logging</shadedPattern>
                                     <excludes>
                                         <exclude>org.apache.log4j.*</exclude>
+                                        <exclude>org.apache.log4j.spi.*</exclude>
                                     </excludes>
                                 </relocation>
                             </relocations>
