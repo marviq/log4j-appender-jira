@@ -134,22 +134,34 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com</pattern>
-                                    <shadedPattern>repackaged.com.marviq.util.logging</shadedPattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.com</shadedPattern>
                                     <excludes>
                                         <exclude>com.marviq.util.logging.*</exclude>
                                     </excludes>
                                 </relocation>
                                 <relocation>
                                     <pattern>javax</pattern>
-                                    <shadedPattern>repackaged.com.marviq.util.logging</shadedPattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.javax</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org</pattern>
-                                    <shadedPattern>repackaged.org.marviq.util.logging</shadedPattern>
-                                    <excludes>
-                                        <exclude>org.apache.log4j.*</exclude>
-                                        <exclude>org.apache.log4j.spi.*</exclude>
-                                    </excludes>
+                                    <pattern>org.apache.ws</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.org.apache.ws</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.xmlcommons</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.org.apache.xmlcommons</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.xmlrpc</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.org.apache.xmlrpc</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.xml</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.org.xml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.w3c</pattern>
+                                    <shadedPattern>repackaged.com.marviq.util.logging.org.w3c</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
