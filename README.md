@@ -1,4 +1,4 @@
-Marviq's JIRA Appender for Log4j README
+Marviq's JIRA Appender for Log4j
 
 The content of this project can be used as a standard Appender for the Log4j logging framework. The appender provided by
 this project will (attempt to) log events as (or in) Atlassian JIRA issues.
